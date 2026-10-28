@@ -1460,7 +1460,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
       if (e.target.value.replace(/\D/g, '') !== d) return;
       if (r.status === 'ok' || r.status === 'noloc') prefillAddress(r);
       if (r.status === 'ok' && r.km <= RADIUS_KM) { note.className = 'cep-note ok'; note.textContent = `Dentro do raio de entrega: a ${fmtKm(r.km)} da loja.`; }
-      else if (r.status === 'ok') { note.className = 'cep-note warn'; note.textContent = `A ${fmtKm(r.km)} da loja, fora do raio de 2 km. Você pode enviar o pedido e a loja confirma se consegue entregar.`; }
+      else if (r.status === 'ok') { note.className = 'cep-note warn'; note.textContent = 'Para essa localização, é necessário consultar a possibilidade de entrega. Você pode enviar o pedido e a loja confirma.'; }
       else if (r.status === 'notfound') { note.className = 'cep-note err'; note.textContent = 'CEP não encontrado. Confira os números.'; }
       else { note.className = 'cep-note'; note.textContent = ''; }
       if (step === 2) updateSendLink();
@@ -1708,10 +1708,10 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
       cepRes.innerHTML = `Entregamos em <b>${esc(placeOf(r))}</b>, a ${fmtKm(r.km)} da loja. Chega em até 2 horas, grátis acima de R$ 40,00.${debugLine(r)}`;
     } else if (r.status === 'ok') {
       cepRes.className = 'cep-result warn';
-      cepRes.innerHTML = `<b>${esc(placeOf(r))}</b> fica a ${fmtKm(r.km)} da loja, fora do nosso raio de 2 km. Consulte a disponibilidade de entrega para a sua localização.<br>${askLink(r, 'Consultar disponibilidade')}${debugLine(r)}`;
+      cepRes.innerHTML = `Para essa localização, é necessário consultar a possibilidade de entrega.<br>${askLink(r, 'Consultar disponibilidade')}${debugLine(r)}`;
     } else if (r.status === 'noloc') {
       cepRes.className = 'cep-result warn';
-      cepRes.innerHTML = `Encontramos <b>${esc(placeOf(r))}</b>, mas não conseguimos calcular a distância até a loja. Consulte a disponibilidade de entrega.<br>${askLink(r, 'Consultar disponibilidade')}${debugLine(r)}`;
+      cepRes.innerHTML = `Para essa localização, é necessário consultar a possibilidade de entrega.<br>${askLink(r, 'Consultar disponibilidade')}${debugLine(r)}`;
     } else if (r.status === 'notfound') {
       cepRes.className = 'cep-result err';
       cepRes.textContent = `Não encontramos o CEP ${fmtCep(d)}. Confira os números e tente de novo.`;
