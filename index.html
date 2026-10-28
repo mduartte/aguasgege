@@ -503,6 +503,38 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 @media (max-width:600px){.toast{bottom:calc(90px + env(safe-area-inset-bottom,0px))}}
 
+/* ---------- Animações ao rolar ----------
+   Só ganham estado inicial escondido os elementos que estão abaixo da tela quando a página abre.
+   Cada um aparece uma vez e depois volta ao estilo normal. */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(32px);transition:opacity .75s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+  .rv.rv-l{transform:translateX(-36px)}
+  .rv.rv-r{transform:translateX(36px)}
+  .rv.rv-zoom{transform:translateY(24px) scale(.94)}
+  .rv.rv-x{opacity:1;transform:scaleX(0);transform-origin:left center;transition-duration:.9s}
+  .rv.rv-pop{transform:translateY(12px) scale(.92);transform-origin:bottom right}
+  .rv.rv-pop-l{transform:translateY(12px) scale(.92);transform-origin:bottom left}
+  @media (max-width:700px){.rv.rv-l,.rv.rv-r{transform:translateY(32px)}}
+  .rv.in{opacity:1;transform:none}
+
+  /* Entrada do topo ao abrir a página */
+  .hero-copy > *{animation:heroIn .8s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0) * 90ms)}
+  .counter{animation:heroIn .9s cubic-bezier(.2,.7,.2,1) .25s both}
+  .counter-logo{animation:badgeIn .9s cubic-bezier(.3,1.4,.5,1) .55s both}
+  .quick-item{animation:heroIn .6s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(.6s + var(--i,0) * 90ms)}
+  @keyframes heroIn{from{opacity:0;transform:translateY(24px)}}
+  @keyframes badgeIn{from{opacity:0;transform:scale(.4) rotate(-25deg)}}
+
+  /* Digitando... na conversa do WhatsApp */
+  .typing{justify-self:start;display:inline-flex;gap:4px;padding:12px 14px;border-radius:14px;border-top-left-radius:4px;background:var(--white);box-shadow:0 1px 1px rgba(14,21,37,.08)}
+  .typing i{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:blink 1s infinite}
+  .typing i:nth-child(2){animation-delay:.15s}
+  .typing i:nth-child(3){animation-delay:.3s}
+  @keyframes blink{0%,60%,100%{opacity:.25}30%{opacity:1}}
+}
+.typing{display:none}
+.chat.typing-on .typing{display:inline-flex}
+
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation:none!important;transition:none!important}
@@ -659,6 +691,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
         <div class="chat">
           <span class="chat-day">Hoje</span>
           <p class="bubble out">Olá, vim pelo site e gostaria de fazer um pedido!<br><br><b>Itens do pedido</b><br>2x Água Mineral 20L – R$ 29,80<br>1x Mel Silvestre – R$ 32,00<br><b>Total: R$ 61,80</b><br><br><b>Entrega</b><br>R. das Flores, 120 · Apto 42, Bloco B<br><b>Pagamento:</b> Pix<span class="time">10:42 <span class="ticks">✓✓</span></span></p>
+          <span class="typing" aria-hidden="true"><i></i><i></i><i></i></span>
           <p class="bubble in">Oi! Pedido confirmado. Já separamos os galões e o entregador sai em seguida.<span class="time">10:43</span></p>
         </div>
       </div>
@@ -1484,6 +1517,81 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
     if (!$('#co-cep').value) $('#co-cep').value = cep.value;
     cepRes.textContent = `Entregamos no CEP ${cep.value}: até 2 horas, grátis acima de R$ 40,00. (resposta de exemplo)`;
   });
+
+  /* Animações ao rolar a página */
+  (function scrollReveal() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+    $$('.hero-copy > *').forEach((el, i) => el.style.setProperty('--i', i));
+    $$('.quick-item').forEach((el, i) => el.style.setProperty('--i', i));
+
+    // [seletor, variação, atraso entre irmãos em ms, agrupar por]
+    const GROUPS = [
+      ['main .sec-head > *', '', 90, '.sec-head'],
+      ['.ribbon-list li', '', 90],
+      ['.shelf-list', '', 0], ['.shelf-free', '', 0],
+      ['.product', 'rv-zoom', 80, 'cols'],
+      ['.not-found', '', 0],
+      ['.how-steps li', '', 120],
+      ['.phone', 'rv-zoom', 0],
+      ['.calc-input', 'rv-l', 0], ['.calc-result', 'rv-r', 0], ['.club-biz', '', 0],
+      ['.g-score', 'rv-r', 0],
+      ['.claim', 'rv-l', 0], ['.proof .quote', 'rv-r', 0],
+      ['.reviews-more', '', 0],
+      ['.map-panel', 'rv-zoom', 0],
+      ['.radar-dot', 'rv-pop-l', 120],
+      ['.wk-track i', 'rv-x', 70],
+      ['.week-note, .chips, .fee-note', '', 90],
+      ['.faq details', '', 80],
+      ['.closing-top > *', '', 120], ['.closing-grid > div', '', 100], ['.footer-bottom', '', 0]
+    ];
+    const vh = innerHeight;
+    const items = [];
+    GROUPS.forEach(([sel, variant, step, by]) => {
+      let i = 0, lastParent = null, lastTop = null;
+      $$(sel).forEach(el => {
+        if (el.getBoundingClientRect().top < vh * 0.92) return; // já visível ao abrir: fica como está
+        if (by === '.sec-head') { const p = el.closest('.sec-head'); if (p !== lastParent) { i = 0; lastParent = p; } }
+        if (by === 'cols') { const t = Math.round(el.getBoundingClientRect().top); if (t !== lastTop) { i = 0; lastTop = t; } }
+        el.classList.add('rv');
+        if (variant) el.classList.add(variant);
+        el.style.setProperty('--d', `${(i++ * step) / 1000}s`);
+        items.push(el);
+      });
+    });
+    const done = el => {
+      el.classList.remove('rv', 'in', 'rv-l', 'rv-r', 'rv-zoom', 'rv-x', 'rv-pop', 'rv-pop-l');
+      el.style.removeProperty('--d');
+    };
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        const el = en.target;
+        io.unobserve(el);
+        el.classList.add('in');
+        const ms = 950 + parseFloat(getComputedStyle(el).getPropertyValue('--d') || 0) * 1000;
+        setTimeout(() => done(el), ms);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    items.forEach(el => io.observe(el));
+
+    // Conversa do WhatsApp: a mensagem do cliente aparece, a loja "digita" e responde
+    const chat = $('.chat');
+    if (chat && chat.getBoundingClientRect().top > vh * 0.92) {
+      const out = chat.querySelector('.bubble.out'), reply = chat.querySelector('.bubble.in');
+      [out, reply].forEach(b => b.classList.add('rv', 'rv-pop'));
+      out.classList.replace('rv-pop', 'rv-pop');
+      reply.classList.replace('rv-pop', 'rv-pop-l');
+      const cio = new IntersectionObserver(([en]) => {
+        if (!en.isIntersecting) return;
+        cio.disconnect();
+        setTimeout(() => out.classList.add('in'), 500);
+        setTimeout(() => chat.classList.add('typing-on'), 1300);
+        setTimeout(() => { chat.classList.remove('typing-on'); reply.classList.add('in'); }, 2600);
+        setTimeout(() => [out, reply].forEach(done), 3600);
+      }, { threshold: 0.5 });
+      cio.observe(chat);
+    }
+  })();
 
   /* Copiar número */
   $$('[data-copy]').forEach(b => b.addEventListener('click', () => {
