@@ -1458,7 +1458,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
     checkCep(d).then(r => {
       if (e.target.value.replace(/\D/g, '') !== d) return;
       if (r.status === 'ok' || r.status === 'noloc') prefillAddress(r);
-      if (r.status === 'ok' && r.km <= RADIUS_KM) { note.className = 'cep-note ok'; note.textContent = `Dentro do raio de entrega: a ${fmtKm(r.km)} da loja.`; }
+      if (r.status === 'ok' && r.km <= RADIUS_KM) { note.className = 'cep-note ok'; note.textContent = 'Entregamos nesse endereço em até 2 horas.'; }
       else if (r.status === 'ok') { note.className = 'cep-note warn'; note.textContent = 'Para essa localização, é necessário consultar a possibilidade de entrega. Você pode enviar o pedido e a loja confirma.'; }
       else if (r.status === 'notfound') { note.className = 'cep-note err'; note.textContent = 'CEP não encontrado. Confira os números.'; }
       else { note.className = 'cep-note'; note.textContent = ''; }
@@ -1469,10 +1469,10 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
   /* CEP: endereço e distância até a loja.
      Coordenadas: 1) AwesomeAPI  2) OpenStreetMap pela rua (só aceita resultado no nível de rua).
      As coordenadas da BrasilAPI não são usadas: muitas vezes apontam para o centro da cidade.
-     A distância é em linha reta até STORE (troque pelas coordenadas exatas da loja no Google Maps). */
+     A distância é em linha reta até STORE, a porta da loja. */
   const RADIUS_KM = 2;
   const esc = t => String(t || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const STORE = { lat: -23.5397, lng: -46.5952 }; // aproximado: R. Belém, 166 · Belenzinho
+  const STORE = { lat: -23.5389962, lng: -46.5971569 }; // R. Belém, 166 · Belenzinho (Google Maps)
   const DEBUG = /teste\.html|[?&]debug/.test(location.href);
   const fmtCep = d => `${String(d).slice(0, 5)}-${String(d).slice(5)}`;
   const fmtKm = km => km < 1 ? `${Math.max(100, Math.round(km * 10) * 100)} m` : `${km.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} km`;
@@ -1704,7 +1704,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
     btn.disabled = false;
     if (r.status === 'ok' && r.km <= RADIUS_KM) {
       cepRes.className = 'cep-result ok';
-      cepRes.innerHTML = `Entregamos em <b>${esc(placeOf(r))}</b>, a ${fmtKm(r.km)} da loja. Chega em até 2 horas, grátis acima de R$ 40,00.${debugLine(r)}`;
+      cepRes.innerHTML = `Entregamos em <b>${esc(placeOf(r))}</b> em até 2 horas.${debugLine(r)}`;
     } else if (r.status === 'ok') {
       cepRes.className = 'cep-result warn';
       cepRes.innerHTML = `Para essa localização, é necessário consultar a possibilidade de entrega.<br>${askLink(r, 'Consultar disponibilidade')}${debugLine(r)}`;

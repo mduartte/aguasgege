@@ -23,5 +23,5 @@ Protótipo em análise: textos, preços e bairros atendidos ainda são exemplos.
 - Taxa de entrega: `FREE_FROM` e `FEE`
 - Horário de atendimento: `HOURS`
 - Número do WhatsApp: `WHATS`
-- Raio de entrega e posição da loja: `RADIUS_KM` e `STORE` (coordenadas aproximadas; troque pelas exatas do Google Maps)
+- Raio de entrega e posição da loja: `RADIUS_KM` e `STORE` (coordenadas da porta da loja, tiradas do Google Maps)
 - Para ver de onde veio cada coordenada na consulta de CEP, abra o site com `?debug` no endereço
