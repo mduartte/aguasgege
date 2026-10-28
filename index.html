@@ -503,6 +503,71 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 @media (max-width:600px){.toast{bottom:calc(90px + env(safe-area-inset-bottom,0px))}}
 
+/* ---------- Vidro: preços ---------- */
+.glass{background:rgba(255,255,255,.28);-webkit-backdrop-filter:blur(14px) saturate(170%);backdrop-filter:blur(14px) saturate(170%);border:1px solid rgba(255,255,255,.65);box-shadow:inset 0 1px 0 rgba(255,255,255,.85),inset 0 -1px 0 rgba(255,255,255,.2),0 8px 20px -10px rgba(14,21,37,.35)}
+.product-tile{overflow:hidden}
+.product-tile .sil{width:50%;transform:translateY(9%)}
+.tile-note{top:12px;bottom:auto;right:12px}
+.glass-price{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;align-items:baseline;gap:3px;margin:0;padding:7px 14px;border-radius:999px;font-size:1.2rem;font-weight:800;letter-spacing:-.03em;color:var(--ink);white-space:nowrap;
+  background:rgba(255,255,255,.3);-webkit-backdrop-filter:blur(12px) saturate(170%);backdrop-filter:blur(12px) saturate(170%);border:1px solid rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 10px 22px -12px rgba(14,21,37,.45);transition:background .25s,transform .25s}
+.glass-price small{font-size:.75rem;font-weight:700;color:var(--ink);opacity:.7}
+.product-foot{padding-top:14px}
+.product .buy{width:100%}
+.product .add{width:100%;border-radius:999px;gap:8px;grid-auto-flow:column;justify-content:center;font:700 .95rem/1 var(--font)}
+.product .add:hover{transform:none}
+.product .stepper{width:100%;justify-content:space-between}
+@media (max-width:760px){.tile-note{display:none}.product-tile .sil{width:40%;transform:translateY(-10%)}.glass-price{bottom:8px;padding:5px 11px;font-size:1.02rem}.glass-price small{font-size:.68rem}}
+.glass-total{padding:10px 16px;border-radius:18px;background:rgba(255,255,255,.14);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+
+/* ---------- Cards líquidos (Clube) ---------- */
+.club-panel{isolation:isolate}
+.blobs{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden;border-radius:inherit}
+.blobs i{position:absolute;border-radius:50%;filter:blur(38px);opacity:.85}
+.blobs i:nth-child(1){width:340px;height:340px;left:4%;top:42%;background:#3FA2FF;animation:drift1 16s ease-in-out infinite alternate}
+.blobs i:nth-child(2){width:280px;height:280px;left:46%;top:52%;background:var(--yellow);opacity:.55;animation:drift2 19s ease-in-out infinite alternate}
+.blobs i:nth-child(3){width:300px;height:300px;right:2%;top:30%;background:var(--green);opacity:.6;animation:drift3 22s ease-in-out infinite alternate}
+@keyframes drift1{to{transform:translate(120px,-60px) scale(1.15)}}
+@keyframes drift2{to{transform:translate(-140px,-40px) scale(.9)}}
+@keyframes drift3{to{transform:translate(-90px,90px) scale(1.1)}}
+.liquid{position:relative;isolation:isolate;overflow:hidden;color:var(--white);
+  background:linear-gradient(140deg,rgba(255,255,255,.26),rgba(255,255,255,.08) 45%,rgba(255,255,255,.14));
+  -webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);
+  border:1px solid rgba(255,255,255,.38);
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.7),inset 0 -10px 24px -12px rgba(255,255,255,.25),inset 0 0 0 1px rgba(255,255,255,.06),0 24px 48px -24px rgba(4,28,66,.6)}
+.liquid::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;background:radial-gradient(320px circle at var(--mx,20%) var(--my,0%),rgba(255,255,255,.38),transparent 62%);opacity:.55;transition:opacity .35s}
+.liquid::after{content:"";position:absolute;left:8%;right:8%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent);pointer-events:none}
+.calc-result.liquid,.club-biz.liquid{color:var(--white)}
+.calc-result.liquid .calc-kicker{color:rgba(255,255,255,.75)}
+.calc-result.liquid .plan-price{display:inline-flex;align-self:flex-start;padding:10px 18px 12px;border-radius:20px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
+.calc-result.liquid .plan-price small{color:rgba(255,255,255,.75)}
+.calc-result.liquid .plan-unit{color:#A6F5CB}
+.calc-result.liquid .plan-list{border-top-color:rgba(255,255,255,.25)}
+.calc-result.liquid .plan-list .ico{color:var(--yellow)}
+.club-biz.liquid{background:linear-gradient(140deg,rgba(255,255,255,.2),rgba(255,255,255,.06))}
+
+/* ---------- Ao passar o mouse (só em telas com mouse) ---------- */
+@media (hover:hover) and (pointer:fine){
+  .liquid:hover::before{opacity:1}
+  .product:hover .glass-price{background:rgba(255,255,255,.5);transform:translateX(-50%) translateY(-3px)}
+  .proof .claim-ico{transition:background .25s,color .25s,transform .25s}
+  .proof:hover .claim-ico{background:var(--brand);color:var(--white);transform:rotate(-6deg)}
+  .proof .quote{transition:transform .3s,box-shadow .3s}
+  .proof:hover .quote{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+  .proof:hover mark{animation:sweep .7s ease-out}
+  .how-steps li{cursor:default;transition:background .2s}
+  .how-steps li:hover::before{background:var(--brand);color:var(--white)}
+  .galoes i{cursor:pointer}
+  .galoes:hover i.on{opacity:.55}
+  .galoes i.preview{opacity:1!important}
+}
+@keyframes sweep{from{background-size:0 100%}to{background-size:100% 100%}}
+.quote mark{background:linear-gradient(transparent 58%,#FFE7A3 58%) no-repeat 0 0/100% 100%}
+.part{border-radius:6px;transition:background .25s,opacity .25s}
+.phone.show-1 .part:not([data-part="1"]),.phone.show-2 .part:not([data-part="2"]),.phone.show-3 .part:not([data-part="3"]){opacity:.35}
+.phone.show-1 [data-part="1"],.phone.show-2 [data-part="2"]{background:rgba(255,199,44,.35);box-shadow:0 0 0 3px rgba(255,199,44,.35)}
+.phone.show-3 .bubble[data-part="3"]{box-shadow:0 0 0 3px rgba(255,199,44,.6)}
+@media (prefers-reduced-motion:reduce){.blobs i{animation:none}}
+
 /* ---------- Animações ao rolar ----------
    Só ganham estado inicial escondido os elementos que estão abaixo da tela quando a página abre.
    Cada um aparece uma vez e depois volta ao estilo normal. */
@@ -515,7 +580,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
   .rv.rv-pop{transform:translateY(12px) scale(.92);transform-origin:bottom right}
   .rv.rv-pop-l{transform:translateY(12px) scale(.92);transform-origin:bottom left}
   @media (max-width:700px){.rv.rv-l,.rv.rv-r{transform:translateY(32px)}}
-  .rv.in{opacity:1;transform:none}
+  .rv.rv-in{opacity:1;transform:none}
 
   /* Entrada do topo ao abrir a página */
   .hero-copy > *{animation:heroIn .8s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0) * 90ms)}
@@ -622,7 +687,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
         </div>
         <ul class="quick" id="quick-list"></ul>
         <div class="counter-foot">
-          <div><small>Total do pedido</small><b id="quick-total">R$ 0,00</b></div>
+          <div class="glass-total"><small>Total do pedido</small><b id="quick-total">R$ 0,00</b></div>
           <button class="btn btn-yellow" type="button" id="quick-go" disabled>Ver pedido</button>
         </div>
         <p class="counter-more">Procurando outra coisa? <a href="#produtos">Veja o catálogo completo</a></p>
@@ -678,9 +743,9 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
           <p>Sem cadastro e sem aplicativo. O pedido chega pronto para a nossa equipe, e você acompanha tudo pela conversa.</p>
         </div>
         <ol class="how-steps">
-          <li><h3>Escolha os produtos</h3><p>Use o pedido rápido ou o catálogo. Ajuste as quantidades com o − e o +.</p></li>
-          <li><h3>Informe endereço e pagamento</h3><p>Apartamento, bloco, troco: tudo vai junto. O site lembra seus dados no próximo pedido.</p></li>
-          <li><h3>Envie e receba em até 2 horas</h3><p>O WhatsApp abre com a mensagem pronta. Na recarga, levamos o galão vazio.</p></li>
+          <li data-step="1"><h3>Escolha os produtos</h3><p>Use o pedido rápido ou o catálogo. Ajuste as quantidades com o − e o +.</p></li>
+          <li data-step="2"><h3>Informe endereço e pagamento</h3><p>Apartamento, bloco, troco: tudo vai junto. O site lembra seus dados no próximo pedido.</p></li>
+          <li data-step="3"><h3>Envie e receba em até 2 horas</h3><p>O WhatsApp abre com a mensagem pronta. Na recarga, levamos o galão vazio.</p></li>
         </ol>
       </div>
       <div class="phone" role="img" aria-label="Exemplo de conversa: o cliente envia o pedido montado no site e a Gegê Águas confirma a entrega">
@@ -690,9 +755,9 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
         </div>
         <div class="chat">
           <span class="chat-day">Hoje</span>
-          <p class="bubble out">Olá, vim pelo site e gostaria de fazer um pedido!<br><br><b>Itens do pedido</b><br>2x Água Mineral 20L – R$ 29,80<br>1x Mel Silvestre – R$ 32,00<br><b>Total: R$ 61,80</b><br><br><b>Entrega</b><br>R. das Flores, 120 · Apto 42, Bloco B<br><b>Pagamento:</b> Pix<span class="time">10:42 <span class="ticks">✓✓</span></span></p>
+          <p class="bubble out">Olá, vim pelo site e gostaria de fazer um pedido!<br><br><span class="part" data-part="1"><b>Itens do pedido</b><br>2x Água Mineral 20L – R$ 29,80<br>1x Mel Silvestre – R$ 32,00<br><b>Total: R$ 61,80</b></span><br><br><span class="part" data-part="2"><b>Entrega</b><br>R. das Flores, 120 · Apto 42, Bloco B<br><b>Pagamento:</b> Pix</span><span class="time">10:42 <span class="ticks">✓✓</span></span></p>
           <span class="typing" aria-hidden="true"><i></i><i></i><i></i></span>
-          <p class="bubble in">Oi! Pedido confirmado. Já separamos os galões e o entregador sai em seguida.<span class="time">10:43</span></p>
+          <p class="bubble in part" data-part="3">Oi! Pedido confirmado. Já separamos os galões e o entregador sai em seguida.<span class="time">10:43</span></p>
         </div>
       </div>
     </div>
@@ -701,13 +766,14 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
   <section class="section" id="clube" style="padding-top:0" data-sec="06 · Clube de assinatura">
     <div class="wrap">
       <div class="club-panel">
+        <div class="blobs" aria-hidden="true"><i></i><i></i><i></i></div>
         <div class="sec-head">
           <p class="eyebrow">Clube Gegê</p>
           <h2>Assine e nunca fique sem água</h2>
           <p>Entregas programadas com preço fixo. Pause, altere ou cancele quando quiser, sem multa.</p>
         </div>
         <div class="calc">
-          <div class="calc-input">
+          <div class="calc-input liquid">
             <label for="calc-range">Quantos galões de 20 litros sua casa usa por mês?</label>
             <div class="calc-val"><output id="calc-out" for="calc-range">4</output><span id="calc-word">galões</span></div>
             <div class="galoes" id="galoes" aria-hidden="true"></div>
@@ -715,16 +781,16 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
             <div class="calc-scale" aria-hidden="true"><span>1</span><span>10</span></div>
             <p class="calc-hint">Uma pessoa bebe cerca de 2 litros por dia: um pouco mais de 3 galões por mês.</p>
           </div>
-          <div class="calc-result" aria-live="polite">
+          <div class="calc-result liquid" aria-live="polite">
             <p class="calc-kicker">Plano indicado</p>
             <h3 class="calc-plan" id="calc-plan">Família</h3>
             <p class="plan-price" id="calc-price"><small>R$</small>51,60<small>/mês</small></p>
             <p class="plan-unit" id="calc-unit">R$ 12,90 por galão · economia de R$ 8,00 por mês</p>
             <ul class="plan-list" id="calc-perks"></ul>
-            <a class="btn btn-brand" id="calc-cta" href="https://wa.me/5511993322468" target="_blank" rel="noopener">Assinar pelo WhatsApp</a>
+            <a class="btn btn-yellow" id="calc-cta" href="https://wa.me/5511993322468" target="_blank" rel="noopener">Assinar pelo WhatsApp</a>
           </div>
         </div>
-        <div class="club-biz">
+        <div class="club-biz liquid">
           <div>
             <h3>Para empresas e condomínios</h3>
             <p>Bebedouro em comodato, entregas em horário combinado, nota fiscal e pagamento por boleto.</p>
@@ -1196,13 +1262,13 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
         ${p.tag ? `<span class="tag">${p.tag}</span>` : ''}
         ${silhouette(p)}
         <span class="tile-note">foto do produto</span>
+        <p class="price glass-price"><small>R$</small>${fmt(p.price)}</p>
       </div>
       <div class="product-body">
         <p class="product-cat">${c.label}</p>
         <h3>${p.name}</h3>
         <p class="product-desc">${p.desc}</p>
         <div class="product-foot">
-          <p class="price"><small>R$</small>${fmt(p.price)}</p>
           <div class="buy" data-buy="${p.id}"></div>
         </div>
       </div>
@@ -1283,7 +1349,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
       const hadFocus = box.contains(document.activeElement);
       box.innerHTML = q > 0
         ? `<div class="stepper" role="group" aria-label="Quantidade de ${p.name}"><button type="button" data-step="-1" aria-label="Diminuir ${p.name}">${ICON_MINUS}</button><output aria-live="polite">${q}</output><button type="button" data-step="1" aria-label="Aumentar ${p.name}">${ICON_PLUS}</button></div>`
-        : `<button class="add" type="button" aria-label="Adicionar ${p.name} ao pedido">${ICON_PLUS}</button>`;
+        : `<button class="add" type="button" aria-label="Adicionar ${p.name} ao pedido">${ICON_PLUS}${card.classList.contains('product') ? '<span>Adicionar</span>' : ''}</button>`;
       if (hadFocus) box.querySelector(q > 0 ? '[data-step="1"]' : '.add').focus();
     });
   }
@@ -1518,6 +1584,34 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
     cepRes.textContent = `Entregamos no CEP ${cep.value}: até 2 horas, grátis acima de R$ 40,00. (resposta de exemplo)`;
   });
 
+  /* Cards líquidos: o brilho segue o mouse */
+  $$('.liquid').forEach(card => card.addEventListener('pointermove', e => {
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+    card.style.setProperty('--my', `${e.clientY - r.top}px`);
+  }));
+
+  /* Passos do "Como funciona" destacam a parte da conversa correspondente */
+  const phone = $('.phone');
+  $$('.how-steps li[data-step]').forEach(li => {
+    li.addEventListener('mouseenter', () => phone.classList.add('show-' + li.dataset.step));
+    li.addEventListener('mouseleave', () => phone.classList.remove('show-' + li.dataset.step));
+  });
+
+  /* Galões da calculadora: passar o mouse mostra, clicar escolhe */
+  const galoes = $('#galoes');
+  galoes.addEventListener('mouseover', e => {
+    const g = e.target.closest('i'); if (!g) return;
+    const k = [...galoes.children].indexOf(g);
+    [...galoes.children].forEach((x, i) => x.classList.toggle('preview', i <= k));
+  });
+  galoes.addEventListener('mouseleave', () => [...galoes.children].forEach(x => x.classList.remove('preview')));
+  galoes.addEventListener('click', e => {
+    const g = e.target.closest('i'); if (!g) return;
+    range.value = [...galoes.children].indexOf(g) + 1;
+    updateCalc();
+  });
+
   /* Animações ao rolar a página */
   (function scrollReveal() {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
@@ -1559,7 +1653,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
       });
     });
     const done = el => {
-      el.classList.remove('rv', 'in', 'rv-l', 'rv-r', 'rv-zoom', 'rv-x', 'rv-pop', 'rv-pop-l');
+      el.classList.remove('rv', 'rv-in', 'rv-l', 'rv-r', 'rv-zoom', 'rv-x', 'rv-pop', 'rv-pop-l');
       el.style.removeProperty('--d');
     };
     const io = new IntersectionObserver(entries => {
@@ -1567,7 +1661,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
         if (!en.isIntersecting) return;
         const el = en.target;
         io.unobserve(el);
-        el.classList.add('in');
+        el.classList.add('rv-in');
         const ms = 950 + parseFloat(getComputedStyle(el).getPropertyValue('--d') || 0) * 1000;
         setTimeout(() => done(el), ms);
       });
@@ -1579,14 +1673,13 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
     if (chat && chat.getBoundingClientRect().top > vh * 0.92) {
       const out = chat.querySelector('.bubble.out'), reply = chat.querySelector('.bubble.in');
       [out, reply].forEach(b => b.classList.add('rv', 'rv-pop'));
-      out.classList.replace('rv-pop', 'rv-pop');
       reply.classList.replace('rv-pop', 'rv-pop-l');
       const cio = new IntersectionObserver(([en]) => {
         if (!en.isIntersecting) return;
         cio.disconnect();
-        setTimeout(() => out.classList.add('in'), 500);
+        setTimeout(() => out.classList.add('rv-in'), 500);
         setTimeout(() => chat.classList.add('typing-on'), 1300);
-        setTimeout(() => { chat.classList.remove('typing-on'); reply.classList.add('in'); }, 2600);
+        setTimeout(() => { chat.classList.remove('typing-on'); reply.classList.add('rv-in'); }, 2600);
         setTimeout(() => [out, reply].forEach(done), 3600);
       }, { threshold: 0.5 });
       cio.observe(chat);
