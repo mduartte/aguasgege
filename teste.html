@@ -1468,11 +1468,13 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
   });
 
   /* CEP: endereço e distância até a loja.
-     1) AwesomeAPI (endereço + coordenadas)  2) BrasilAPI  3) ViaCEP + OpenStreetMap para achar as coordenadas.
-     A distância é em linha reta. Para mais precisão, troque STORE_FALLBACK pelas coordenadas exatas da loja no Google Maps. */
+     Coordenadas: 1) AwesomeAPI  2) OpenStreetMap pela rua (só aceita resultado no nível de rua).
+     As coordenadas da BrasilAPI não são usadas: muitas vezes apontam para o centro da cidade.
+     A distância é em linha reta até STORE (troque pelas coordenadas exatas da loja no Google Maps). */
   const RADIUS_KM = 2;
-  const STORE_CEP = '03057010';
-  const STORE_FALLBACK = { lat: -23.5397, lng: -46.5952 }; // aproximado: R. Belém, 166 · Belenzinho
+  const esc = t => String(t || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const STORE = { lat: -23.5397, lng: -46.5952 }; // aproximado: R. Belém, 166 · Belenzinho
+  const DEBUG = /teste\.html|[?&]debug/.test(location.href);
   const fmtCep = d => `${String(d).slice(0, 5)}-${String(d).slice(5)}`;
   const fmtKm = km => km < 1 ? `${Math.max(100, Math.round(km * 10) * 100)} m` : `${km.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} km`;
   const cepChecks = new Map();
@@ -1493,54 +1495,53 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
     } finally { clearTimeout(t); }
   }
   const num = v => (v === '' || v == null || isNaN(Number(v))) ? null : Number(v);
+  const okCoord = (lat, lng) => lat != null && lng != null && Math.abs(lat) <= 90 && Math.abs(lng) <= 180 && !(lat === 0 && lng === 0);
   async function lookupCep(d) {
-    let info = null, notFound = 0, failed = 0;
+    let info = null, notFound = 0;
+    const log = [];
     try {
       const a = await getJSON(`https://cep.awesomeapi.com.br/json/${d}`);
-      if (a.__notFound || a.code === 'not_found' || a.code === 'invalid') notFound++;
-      else info = { street: a.address, district: a.district, city: a.city, uf: a.state, lat: num(a.lat), lng: num(a.lng) };
-    } catch (e) { failed++; }
-    if (!info || info.lat == null) {
+      if (a.__notFound || a.code === 'not_found' || a.code === 'invalid') { notFound++; log.push('AwesomeAPI: não encontrado'); }
+      else {
+        info = { street: a.address, district: a.district, city: a.city, uf: a.state };
+        if (okCoord(num(a.lat), num(a.lng))) { info.lat = num(a.lat); info.lng = num(a.lng); info.src = 'AwesomeAPI'; }
+        log.push(`AwesomeAPI: ${info.src ? 'com coordenadas' : 'sem coordenadas'}`);
+      }
+    } catch (e) { log.push('AwesomeAPI: falhou'); }
+    if (!info) {
       try {
         const b = await getJSON(`https://brasilapi.com.br/api/cep/v2/${d}`);
-        if (b.__notFound) notFound++;
-        else {
-          const co = (b.location && b.location.coordinates) || {};
-          info = info || { street: b.street, district: b.neighborhood, city: b.city, uf: b.state };
-          if (num(co.latitude) != null) { info.lat = num(co.latitude); info.lng = num(co.longitude); }
-        }
-      } catch (e) { failed++; }
+        if (b.__notFound) { notFound++; log.push('BrasilAPI: não encontrado'); }
+        else { info = { street: b.street, district: b.neighborhood, city: b.city, uf: b.state }; log.push('BrasilAPI: endereço'); }
+      } catch (e) { log.push('BrasilAPI: falhou'); }
     }
     if (!info) {
       try {
         const v = await getJSON(`https://viacep.com.br/ws/${d}/json/`);
-        if (v.__notFound || v.erro) notFound++;
-        else info = { street: v.logradouro, district: v.bairro, city: v.localidade, uf: v.uf };
-      } catch (e) { failed++; }
+        if (v.__notFound || v.erro) { notFound++; log.push('ViaCEP: não encontrado'); }
+        else { info = { street: v.logradouro, district: v.bairro, city: v.localidade, uf: v.uf }; log.push('ViaCEP: endereço'); }
+      } catch (e) { log.push('ViaCEP: falhou'); }
     }
-    if (!info) return { status: notFound ? 'notfound' : 'error', cep: d };
-    if (info.lat == null && info.city) {
+    if (!info) return { status: notFound ? 'notfound' : 'error', cep: d, log };
+    if (info.lat == null && info.street && info.city) {
       try {
-        const q = new URLSearchParams({ format: 'json', limit: '1', countrycodes: 'br', city: info.city, state: info.uf || '', street: info.street || '' });
+        const q = new URLSearchParams({ format: 'jsonv2', limit: '1', countrycodes: 'br', street: info.street, city: info.city, state: info.uf || '', country: 'Brasil' });
         const n = await getJSON(`https://nominatim.openstreetmap.org/search?${q}`);
-        if (Array.isArray(n) && n[0]) { info.lat = num(n[0].lat); info.lng = num(n[0].lon); }
-      } catch (e) { /* segue sem coordenadas */ }
+        const hit = Array.isArray(n) && n.find(x => x.category === 'highway' || ['road', 'street', 'residential'].includes(x.addresstype));
+        if (hit && okCoord(num(hit.lat), num(hit.lon))) { info.lat = num(hit.lat); info.lng = num(hit.lon); info.src = 'OpenStreetMap'; }
+        log.push(`OpenStreetMap: ${hit ? 'rua encontrada' : 'rua não encontrada'}`);
+      } catch (e) { log.push('OpenStreetMap: falhou'); }
     }
-    return { ...info, cep: d, status: info.lat == null ? 'noloc' : 'ok' };
-  }
-  let storePos = null;
-  async function getStore() {
-    if (storePos) return storePos;
-    try { const r = await lookupCep(STORE_CEP); if (r.status === 'ok') storePos = { lat: r.lat, lng: r.lng }; } catch (e) {}
-    return storePos || (storePos = STORE_FALLBACK);
+    return { ...info, cep: d, log, status: info.lat == null ? 'noloc' : 'ok' };
   }
   async function checkCep(d) {
     if (cepChecks.has(d)) return cepChecks.get(d);
-    const [r, store] = await Promise.all([lookupCep(d), getStore()]);
-    if (r.status === 'ok') r.km = haversine(store, r);
+    const r = await lookupCep(d);
+    if (r.status === 'ok') r.km = haversine(STORE, r);
     if (r.status !== 'error') cepChecks.set(d, r);
     return r;
   }
+  const debugLine = r => !DEBUG ? '' : `<br><small style="font-weight:500;color:var(--muted)">Teste · ${esc(r.log.join(' · '))}${r.lat != null ? ` · coordenadas ${r.lat.toFixed(5)}, ${r.lng.toFixed(5)} (${r.src})` : ''}${r.km != null ? ` · ${r.km.toFixed(2)} km` : ''}</small>`;
   function prefillAddress(r) {
     const co = $('#co-cep');
     if (!co.value.replace(/\D/g, '')) co.value = fmtCep(r.cep);
@@ -1681,7 +1682,6 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
     const d = cep.value.replace(/\D/g, '').slice(0, 8);
     cep.value = d.length > 5 ? `${d.slice(0, 5)}-${d.slice(5)}` : d;
   });
-  const esc = t => String(t || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const placeOf = r => [r.street, r.district].filter(Boolean).join(', ') || `CEP ${fmtCep(r.cep)}`;
   const askLink = (r, label) => {
     const where = [r.street, r.district, r.city && `${r.city}${r.uf ? '/' + r.uf : ''}`].filter(Boolean).join(', ');
@@ -1705,19 +1705,19 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
     btn.disabled = false;
     if (r.status === 'ok' && r.km <= RADIUS_KM) {
       cepRes.className = 'cep-result ok';
-      cepRes.innerHTML = `Entregamos em <b>${esc(placeOf(r))}</b>, a ${fmtKm(r.km)} da loja. Chega em até 2 horas, grátis acima de R$ 40,00.`;
+      cepRes.innerHTML = `Entregamos em <b>${esc(placeOf(r))}</b>, a ${fmtKm(r.km)} da loja. Chega em até 2 horas, grátis acima de R$ 40,00.${debugLine(r)}`;
     } else if (r.status === 'ok') {
       cepRes.className = 'cep-result warn';
-      cepRes.innerHTML = `<b>${esc(placeOf(r))}</b> fica a ${fmtKm(r.km)} da loja, fora do nosso raio de 2 km. Consulte a disponibilidade de entrega para a sua localização.<br>${askLink(r, 'Consultar disponibilidade')}`;
+      cepRes.innerHTML = `<b>${esc(placeOf(r))}</b> fica a ${fmtKm(r.km)} da loja, fora do nosso raio de 2 km. Consulte a disponibilidade de entrega para a sua localização.<br>${askLink(r, 'Consultar disponibilidade')}${debugLine(r)}`;
     } else if (r.status === 'noloc') {
       cepRes.className = 'cep-result warn';
-      cepRes.innerHTML = `Encontramos <b>${esc(placeOf(r))}</b>, mas não conseguimos calcular a distância até a loja. Consulte a disponibilidade de entrega.<br>${askLink(r, 'Consultar disponibilidade')}`;
+      cepRes.innerHTML = `Encontramos <b>${esc(placeOf(r))}</b>, mas não conseguimos calcular a distância até a loja. Consulte a disponibilidade de entrega.<br>${askLink(r, 'Consultar disponibilidade')}${debugLine(r)}`;
     } else if (r.status === 'notfound') {
       cepRes.className = 'cep-result err';
       cepRes.textContent = `Não encontramos o CEP ${fmtCep(d)}. Confira os números e tente de novo.`;
     } else {
       cepRes.className = 'cep-result warn';
-      cepRes.innerHTML = `Não conseguimos consultar o CEP agora. Fale com a gente para confirmar a entrega.<br>${askLink({ cep: d }, 'Consultar pelo WhatsApp')}`;
+      cepRes.innerHTML = `Não conseguimos consultar o CEP agora. Fale com a gente para confirmar a entrega.<br>${askLink({ cep: d }, 'Consultar pelo WhatsApp')}${debugLine(r)}`;
     }
     if (r.status === 'ok' || r.status === 'noloc') prefillAddress(r);
   });
