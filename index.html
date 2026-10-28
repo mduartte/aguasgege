@@ -204,25 +204,25 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
 @media (min-width:961px){.shelf{position:sticky;top:96px}}
 .shelf .sec-head{margin-bottom:0}
 .shelf .sec-head h2{font-size:clamp(2rem,3.4vw,2.6rem)}
-.shelf-list{display:grid;gap:4px;min-width:0}
-.shelf-item{display:grid;grid-template-columns:12px minmax(0,1fr) auto;align-items:center;gap:4px 12px;width:100%;padding:14px 16px;border:0;border-radius:18px;background:transparent;color:var(--ink);text-align:left;font:inherit;cursor:pointer;transition:background .15s}
-.shelf-item:hover{background:rgba(255,255,255,.7)}
-.shelf-item[aria-pressed="true"]{background:var(--white);box-shadow:var(--shadow)}
-.shelf-dot{width:12px;height:12px;border-radius:50%;background:var(--dot)}
-.shelf-item b{font-size:1.05rem;font-weight:800;letter-spacing:-.02em}
-.shelf-item small{font-size:.8rem;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
-.shelf-item .shelf-desc{grid-column:2 / -1;font-size:.86rem;color:var(--muted);line-height:1.4}
+.shelf-list{display:grid;gap:2px;min-width:0;padding:6px;border-radius:22px;background:var(--white);box-shadow:var(--shadow)}
+.shelf-item{display:grid;grid-template-columns:10px minmax(0,1fr) auto;align-items:center;gap:2px 12px;width:100%;padding:12px 14px;border:0;border-radius:16px;background:transparent;color:var(--ink);text-align:left;font:inherit;cursor:pointer;transition:background .15s}
+.shelf-item:hover{background:var(--gray)}
+.shelf-item[aria-pressed="true"]{background:var(--tint)}
+.shelf-dot{width:10px;height:10px;border-radius:50%;background:var(--dot)}
+.shelf-item b{font-size:1rem;font-weight:700;letter-spacing:-.01em}
+.shelf-item[aria-pressed="true"] b{font-weight:800}
+.shelf-item small{padding:2px 9px;border-radius:999px;background:var(--gray);font-size:.76rem;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.shelf-item[aria-pressed="true"] small{background:var(--white);color:var(--ink)}
+.shelf-item .shelf-desc{grid-column:2 / -1;padding-top:2px;font-size:.85rem;color:var(--muted);line-height:1.4}
 .shelf-item[aria-pressed="false"] .shelf-desc{display:none}
 .shelf-free{display:flex;gap:10px;align-items:flex-start;padding:14px 16px;border-radius:16px;background:var(--green-tint);font-size:.9rem}
 .shelf-free .ico{color:var(--green-text);stroke-width:2.6;margin-top:1px}
 .shop .product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media (max-width:960px){
   .shop{grid-template-columns:minmax(0,1fr)}
-  .shelf-list{display:flex;gap:8px;overflow-x:auto;margin-inline:-16px;padding-inline:16px;scrollbar-width:none}
+  .shelf-list{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
   .shelf-list::-webkit-scrollbar{display:none}
-  .shelf-item{display:flex;width:auto;flex:none;padding:10px 16px;border-radius:999px;background:var(--white);box-shadow:inset 0 0 0 1px var(--line)}
-  .shelf-item[aria-pressed="true"]{background:var(--ink);color:var(--white);box-shadow:none}
-  .shelf-item[aria-pressed="true"] small{color:rgba(255,255,255,.7)}
+  .shelf-item{display:flex;width:auto;flex:none;padding:9px 14px;border-radius:16px}
   .shelf-item .shelf-desc{display:none}
   .shelf-item b{font-size:.95rem}
   .shelf-free{display:none}
@@ -230,12 +230,6 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
 @media (max-width:760px){.shop .product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 /* ---------- Produtos ---------- */
-.products-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:28px}
-.products-head .sec-head{margin-bottom:0}
-.tabs{display:flex;flex-wrap:wrap;gap:8px}
-.tab{padding:9px 18px;border:0;border-radius:999px;background:var(--white);color:var(--ink);font:600 .94rem/1.2 var(--font);cursor:pointer;box-shadow:inset 0 0 0 1px var(--line);transition:background .15s,color .15s}
-.tab:hover{box-shadow:inset 0 0 0 1px var(--muted)}
-.tab[aria-pressed="true"]{background:var(--ink);color:var(--white);box-shadow:none}
 .product-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
 @media (max-width:1020px){.product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:760px){.product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}
@@ -623,10 +617,10 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
           <h2>Do galão ao lanche saudável</h2>
         </div>
         <div class="shelf-list" role="group" aria-label="Filtrar produtos por categoria">
-          <button class="tab shelf-item" type="button" data-filter="todos" aria-pressed="true" style="--dot:var(--ink)"><span class="shelf-dot"></span><b>Tudo</b><small data-count-cat="todos"></small><span class="shelf-desc">Todos os produtos da loja em um só pedido.</span></button>
-          <button class="tab shelf-item" type="button" data-filter="agua" aria-pressed="false" style="--dot:var(--brand)"><span class="shelf-dot"></span><b>Água mineral</b><small data-count-cat="agua"></small><span class="shelf-desc">Galões de 20 litros, garrafas de 500 ml e 1,5 litro, com ou sem gás.</span></button>
-          <button class="tab shelf-item" type="button" data-filter="naturais" aria-pressed="false" style="--dot:var(--green)"><span class="shelf-dot"></span><b>Naturais</b><small data-count-cat="naturais"></small><span class="shelf-desc">Castanhas, granolas, mel, chás e água de coco para o dia a dia.</span></button>
-          <button class="tab shelf-item" type="button" data-filter="acessorios" aria-pressed="false" style="--dot:var(--orange)"><span class="shelf-dot"></span><b>Acessórios</b><small data-count-cat="acessorios"></small><span class="shelf-desc">Bombas elétricas, suportes e bebedouros para o seu galão.</span></button>
+          <button class="tab shelf-item" type="button" data-filter="todos" aria-pressed="true" style="--dot:var(--ink);--tint:#EDF0F5"><span class="shelf-dot"></span><b>Tudo</b><small data-count-cat="todos"></small><span class="shelf-desc">Todos os produtos da loja em um só pedido.</span></button>
+          <button class="tab shelf-item" type="button" data-filter="agua" aria-pressed="false" style="--dot:var(--brand);--tint:var(--brand-tint)"><span class="shelf-dot"></span><b>Água mineral</b><small data-count-cat="agua"></small><span class="shelf-desc">Galões de 20 litros, garrafas de 500 ml e 1,5 litro, com ou sem gás.</span></button>
+          <button class="tab shelf-item" type="button" data-filter="naturais" aria-pressed="false" style="--dot:var(--green);--tint:var(--green-tint)"><span class="shelf-dot"></span><b>Naturais</b><small data-count-cat="naturais"></small><span class="shelf-desc">Castanhas, granolas, mel, chás e água de coco para o dia a dia.</span></button>
+          <button class="tab shelf-item" type="button" data-filter="acessorios" aria-pressed="false" style="--dot:var(--orange);--tint:var(--orange-tint)"><span class="shelf-dot"></span><b>Acessórios</b><small data-count-cat="acessorios"></small><span class="shelf-desc">Bombas elétricas, suportes e bebedouros para o seu galão.</span></button>
         </div>
         <p class="shelf-free"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span><strong>Entrega grátis</strong> em pedidos a partir de R$&nbsp;40,00.</span></p>
       </div>
