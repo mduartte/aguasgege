@@ -144,6 +144,18 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
 .cep-result{font-size:.92rem;color:var(--muted);padding-left:4px}
 .cep-result.ok{color:var(--green-text);font-weight:600}
 .cep-result.err{color:var(--danger);font-weight:600}
+.cep-result.warn{color:var(--orange-text);font-weight:600}
+.cep-result.loading{color:var(--muted)}
+.cep-result b{color:var(--ink)}
+.cep-result a{color:inherit;font-weight:800}
+.cep-action{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:8px 14px;border-radius:999px;background:var(--whats);color:var(--white)!important;font-size:.88rem;font-weight:700;text-decoration:none}
+.cep-action:hover{background:#0a7a3e}
+.cep-action .ico{width:16px;height:16px}
+.cep-note{font-size:.8rem;font-weight:600;color:var(--muted)}
+.cep-note.ok{color:var(--green-text)}
+.cep-note.warn{color:var(--orange-text)}
+.cep-note.err{color:var(--danger)}
+.radar-zone{position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 0 2px var(--brand);pointer-events:none}
 .hero-stats{display:flex;flex-wrap:wrap;gap:12px 40px;padding-top:6px}
 .stat{display:grid}
 .stat strong{font-size:1.75rem;font-weight:800;letter-spacing:-.04em;font-variant-numeric:tabular-nums;transition:color .35s ease}
@@ -667,7 +679,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
             <input class="field" id="cep" name="cep" inputmode="numeric" autocomplete="postal-code" placeholder="Digite seu CEP" maxlength="9">
             <button class="btn btn-brand" type="submit">Consultar</button>
           </div>
-          <p class="cep-result" id="cep-result" aria-live="polite">Veja o prazo e a taxa de entrega para o seu endereço.</p>
+          <p class="cep-result" id="cep-result" aria-live="polite">Veja se o seu endereço está no nosso raio de entrega.</p>
         </form>
         <ul class="hero-stats">
           <li class="stat"><strong data-count="120" data-mode="time" data-final="até 2h" data-done="blue"><svg class="clock" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path class="clock-hand" d="M12 12V6.5"/></svg><span class="count-val">até 2h</span></strong><span>prazo de entrega</span></li>
@@ -884,24 +896,26 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
   <section class="section" id="entrega" data-sec="08 · Área de entrega e horário">
     <div class="wrap coverage">
       <div class="map-panel">
-        <div class="radar" role="img" aria-label="Mapa ilustrativo do raio de entrega de 8 km a partir da loja no Belenzinho">
+        <div class="radar" role="img" aria-label="Mapa ilustrativo do raio de entrega de 2 km a partir da loja no Belenzinho">
           <div class="radar-disc"></div>
-          <span class="ring-label" style="top:0%">8 km</span>
-          <span class="ring-label" style="top:12.5%">6 km</span>
-          <span class="ring-label" style="top:25%">4 km</span>
-          <span class="ring-label" style="top:37.5%">2 km</span>
-          <span class="radar-dot" style="left:62%;top:22%"><span>Jardim América</span></span>
-          <span class="radar-dot" style="left:14%;top:42%"><span>Vila Nova</span></span>
-          <span class="radar-dot" style="left:64%;top:68%"><span>Boa Vista</span></span>
-          <span class="radar-dot" style="left:22%;top:76%"><span>Santa Cruz</span></span>
+          <span class="radar-zone"></span>
+          <span class="ring-label" style="top:0%">2 km</span>
+          <span class="ring-label" style="top:12.5%">1,5 km</span>
+          <span class="ring-label" style="top:25%">1 km</span>
+          <span class="ring-label" style="top:37.5%">500 m</span>
+          <span class="radar-dot" style="left:12%;top:46%"><span>Brás</span></span>
+          <span class="radar-dot" style="left:24%;top:16%"><span>Pari</span></span>
+          <span class="radar-dot" style="left:84%;top:40%"><span>Tatuapé</span></span>
+          <span class="radar-dot" style="left:40%;top:84%"><span>Mooca</span></span>
           <span class="radar-center"><span>Loja · Belenzinho</span></span>
         </div>
       </div>
       <div class="cov-info">
         <div class="sec-head">
           <p class="eyebrow">Área de entrega</p>
-          <h2>Entregamos em toda a cidade e região</h2>
-          <p>Nossa loja no Belenzinho atende um raio de 8 km, com entregas ao longo de todo o dia.</p>
+          <h2>Entrega rápida num raio de 2 km</h2>
+          <p>Da loja no Belenzinho, entregamos em até 2 horas num raio de 2 km. Mora mais longe? Consulte o seu CEP: em muitos casos a gente leva também.</p>
+          <a class="link" href="#inicio" id="go-cep">Consultar meu CEP <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
         </div>
         <div>
           <p class="sub-title">Horário de atendimento</p>
@@ -918,9 +932,9 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
           <p class="week-note">Feriados: pode haver alterações no horário.</p>
         </div>
         <div>
-          <p class="sub-title">Bairros atendidos</p>
+          <p class="sub-title">Bairros próximos</p>
           <ul class="chips">
-            <li>Centro</li><li>Jardim América</li><li>Vila Nova</li><li>Boa Vista</li><li>Santa Cruz</li><li>Parque das Águas</li><li>Bela Vista</li><li>São José</li><li class="more">e região</li>
+            <li>Belenzinho</li><li>Brás</li><li>Mooca</li><li>Tatuapé</li><li>Pari</li><li>Água Rasa</li><li class="more">parte fica além de 2 km: confira pelo CEP</li>
           </ul>
         </div>
         <p class="fee-note"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span><strong>Entrega grátis</strong> em pedidos a partir de R$&nbsp;40,00. Abaixo desse valor, a taxa é de R$&nbsp;5,00.</span></p>
@@ -1038,7 +1052,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
 
       <fieldset>
         <legend>Endereço de entrega</legend>
-        <div class="f" data-field="cep"><label for="co-cep">CEP</label><input id="co-cep" name="cep" inputmode="numeric" autocomplete="postal-code" placeholder="00000-000" maxlength="9"></div>
+        <div class="f" data-field="cep"><label for="co-cep">CEP</label><input id="co-cep" name="cep" inputmode="numeric" autocomplete="postal-code" placeholder="00000-000" maxlength="9"><small class="cep-note" id="co-cep-note" aria-live="polite"></small></div>
         <div class="f-row">
           <div class="f grow" data-field="street"><label for="co-street">Rua *</label><input id="co-street" name="street" autocomplete="address-line1" placeholder="Ex.: R. Belém"><small class="err-msg">Informe a rua.</small></div>
           <div class="f num" data-field="number"><label for="co-number">Número *</label><input id="co-number" name="number" inputmode="numeric" placeholder="166"><small class="err-msg">Informe o número.</small></div>
@@ -1438,7 +1452,102 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
   $('#co-cep').addEventListener('input', e => {
     const d = e.target.value.replace(/\D/g, '').slice(0, 8);
     e.target.value = d.length > 5 ? `${d.slice(0, 5)}-${d.slice(5)}` : d;
+    const note = $('#co-cep-note');
+    if (d.length < 8) { note.className = 'cep-note'; note.textContent = ''; return; }
+    note.className = 'cep-note'; note.textContent = 'Consultando o CEP…';
+    checkCep(d).then(r => {
+      if (e.target.value.replace(/\D/g, '') !== d) return;
+      if (r.status === 'ok' || r.status === 'noloc') prefillAddress(r);
+      if (r.status === 'ok' && r.km <= RADIUS_KM) { note.className = 'cep-note ok'; note.textContent = `Dentro do raio de entrega: a ${fmtKm(r.km)} da loja.`; }
+      else if (r.status === 'ok') { note.className = 'cep-note warn'; note.textContent = 'Para essa localização, é necessário consultar a possibilidade de entrega. Você pode enviar o pedido e a loja confirma.'; }
+      else if (r.status === 'notfound') { note.className = 'cep-note err'; note.textContent = 'CEP não encontrado. Confira os números.'; }
+      else { note.className = 'cep-note'; note.textContent = ''; }
+      if (step === 2) updateSendLink();
+    });
   });
+
+  /* CEP: endereço e distância até a loja.
+     Coordenadas: 1) AwesomeAPI  2) OpenStreetMap pela rua (só aceita resultado no nível de rua).
+     As coordenadas da BrasilAPI não são usadas: muitas vezes apontam para o centro da cidade.
+     A distância é em linha reta até STORE (troque pelas coordenadas exatas da loja no Google Maps). */
+  const RADIUS_KM = 2;
+  const esc = t => String(t || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const STORE = { lat: -23.5397, lng: -46.5952 }; // aproximado: R. Belém, 166 · Belenzinho
+  const DEBUG = /teste\.html|[?&]debug/.test(location.href);
+  const fmtCep = d => `${String(d).slice(0, 5)}-${String(d).slice(5)}`;
+  const fmtKm = km => km < 1 ? `${Math.max(100, Math.round(km * 10) * 100)} m` : `${km.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} km`;
+  const cepChecks = new Map();
+  function haversine(a, b) {
+    const R = 6371, rad = x => x * Math.PI / 180;
+    const dLat = rad(b.lat - a.lat), dLng = rad(b.lng - a.lng);
+    const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLng / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(h));
+  }
+  async function getJSON(url, ms = 7000) {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), ms);
+    try {
+      const res = await fetch(url, { signal: ctrl.signal, headers: { Accept: 'application/json' } });
+      if (res.status === 404 || res.status === 400) return { __notFound: true };
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return await res.json();
+    } finally { clearTimeout(t); }
+  }
+  const num = v => (v === '' || v == null || isNaN(Number(v))) ? null : Number(v);
+  const okCoord = (lat, lng) => lat != null && lng != null && Math.abs(lat) <= 90 && Math.abs(lng) <= 180 && !(lat === 0 && lng === 0);
+  async function lookupCep(d) {
+    let info = null, notFound = 0;
+    const log = [];
+    try {
+      const a = await getJSON(`https://cep.awesomeapi.com.br/json/${d}`);
+      if (a.__notFound || a.code === 'not_found' || a.code === 'invalid') { notFound++; log.push('AwesomeAPI: não encontrado'); }
+      else {
+        info = { street: a.address, district: a.district, city: a.city, uf: a.state };
+        if (okCoord(num(a.lat), num(a.lng))) { info.lat = num(a.lat); info.lng = num(a.lng); info.src = 'AwesomeAPI'; }
+        log.push(`AwesomeAPI: ${info.src ? 'com coordenadas' : 'sem coordenadas'}`);
+      }
+    } catch (e) { log.push('AwesomeAPI: falhou'); }
+    if (!info) {
+      try {
+        const b = await getJSON(`https://brasilapi.com.br/api/cep/v2/${d}`);
+        if (b.__notFound) { notFound++; log.push('BrasilAPI: não encontrado'); }
+        else { info = { street: b.street, district: b.neighborhood, city: b.city, uf: b.state }; log.push('BrasilAPI: endereço'); }
+      } catch (e) { log.push('BrasilAPI: falhou'); }
+    }
+    if (!info) {
+      try {
+        const v = await getJSON(`https://viacep.com.br/ws/${d}/json/`);
+        if (v.__notFound || v.erro) { notFound++; log.push('ViaCEP: não encontrado'); }
+        else { info = { street: v.logradouro, district: v.bairro, city: v.localidade, uf: v.uf }; log.push('ViaCEP: endereço'); }
+      } catch (e) { log.push('ViaCEP: falhou'); }
+    }
+    if (!info) return { status: notFound ? 'notfound' : 'error', cep: d, log };
+    if (info.lat == null && info.street && info.city) {
+      try {
+        const q = new URLSearchParams({ format: 'jsonv2', limit: '1', countrycodes: 'br', street: info.street, city: info.city, state: info.uf || '', country: 'Brasil' });
+        const n = await getJSON(`https://nominatim.openstreetmap.org/search?${q}`);
+        const hit = Array.isArray(n) && n.find(x => x.category === 'highway' || ['road', 'street', 'residential'].includes(x.addresstype));
+        if (hit && okCoord(num(hit.lat), num(hit.lon))) { info.lat = num(hit.lat); info.lng = num(hit.lon); info.src = 'OpenStreetMap'; }
+        log.push(`OpenStreetMap: ${hit ? 'rua encontrada' : 'rua não encontrada'}`);
+      } catch (e) { log.push('OpenStreetMap: falhou'); }
+    }
+    return { ...info, cep: d, log, status: info.lat == null ? 'noloc' : 'ok' };
+  }
+  async function checkCep(d) {
+    if (cepChecks.has(d)) return cepChecks.get(d);
+    const r = await lookupCep(d);
+    if (r.status === 'ok') r.km = haversine(STORE, r);
+    if (r.status !== 'error') cepChecks.set(d, r);
+    return r;
+  }
+  const debugLine = r => !DEBUG ? '' : `<br><small style="font-weight:500;color:var(--muted)">Teste · ${esc(r.log.join(' · '))}${r.lat != null ? ` · coordenadas ${r.lat.toFixed(5)}, ${r.lng.toFixed(5)} (${r.src})` : ''}${r.km != null ? ` · ${r.km.toFixed(2)} km` : ''}</small>`;
+  function prefillAddress(r) {
+    const co = $('#co-cep');
+    if (!co.value.replace(/\D/g, '')) co.value = fmtCep(r.cep);
+    if (co.value.replace(/\D/g, '') !== r.cep) return;
+    if (r.street && !$('#co-street').value) $('#co-street').value = r.street;
+    if (r.district && !$('#co-district').value) $('#co-district').value = r.district;
+  }
 
   function buildMessage() {
     const { sub, fee, total } = totals();
@@ -1452,6 +1561,8 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
     if (val('co-complement')) L.push(`Complemento: ${val('co-complement')}`);
     L.push(`Bairro: ${val('co-district')}`);
     if (val('co-cep')) L.push(`CEP: ${val('co-cep')}`);
+    const chk = cepChecks.get(val('co-cep').replace(/\D/g, ''));
+    if (chk && chk.status === 'ok') L.push(`Distância da loja: ~${fmtKm(chk.km)}${chk.km > RADIUS_KM ? ' (fora do raio de 2 km, consultar disponibilidade)' : ''}`);
     if (val('co-ref')) L.push(`Referência: ${val('co-ref')}`);
     L.push('', '*Pagamento*', radio('pay') || '(não informado)');
     if (radio('pay') === 'Dinheiro') {
@@ -1564,25 +1675,52 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
   range.addEventListener('input', updateCalc);
   updateCalc();
 
-  /* Consulta de CEP (resposta simulada) */
+  /* Consulta de CEP pelo topo do site */
   const cep = $('#cep'), cepRes = $('#cep-result');
   cep.addEventListener('input', () => {
     const d = cep.value.replace(/\D/g, '').slice(0, 8);
     cep.value = d.length > 5 ? `${d.slice(0, 5)}-${d.slice(5)}` : d;
   });
-  $('#cep-form').addEventListener('submit', e => {
+  const placeOf = r => [r.street, r.district].filter(Boolean).join(', ') || `CEP ${fmtCep(r.cep)}`;
+  const askLink = (r, label) => {
+    const where = [r.street, r.district, r.city && `${r.city}${r.uf ? '/' + r.uf : ''}`].filter(Boolean).join(', ');
+    const msg = `Olá, vim pelo site! Meu CEP é ${fmtCep(r.cep)}${where ? ` (${where})` : ''}. Vocês entregam no meu endereço?`;
+    return `<a class="cep-action" href="https://wa.me/${WHATS}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5.5h15V16H10l-5.5 4.5z"/></svg>${label}</a>`;
+  };
+  $('#cep-form').addEventListener('submit', async e => {
     e.preventDefault();
     const d = cep.value.replace(/\D/g, '');
     if (d.length !== 8) {
       cepRes.className = 'cep-result err';
-      cepRes.textContent = 'Digite os 8 números do CEP, por exemplo 12345-678.';
+      cepRes.textContent = 'Digite os 8 números do CEP, por exemplo 03057-010.';
       cep.focus();
       return;
     }
-    cepRes.className = 'cep-result ok';
-    if (!$('#co-cep').value) $('#co-cep').value = cep.value;
-    cepRes.textContent = `Entregamos no CEP ${cep.value}: até 2 horas, grátis acima de R$ 40,00. (resposta de exemplo)`;
+    const btn = $('#cep-form button');
+    btn.disabled = true;
+    cepRes.className = 'cep-result loading';
+    cepRes.textContent = 'Consultando o CEP…';
+    const r = await checkCep(d);
+    btn.disabled = false;
+    if (r.status === 'ok' && r.km <= RADIUS_KM) {
+      cepRes.className = 'cep-result ok';
+      cepRes.innerHTML = `Entregamos em <b>${esc(placeOf(r))}</b>, a ${fmtKm(r.km)} da loja. Chega em até 2 horas, grátis acima de R$ 40,00.${debugLine(r)}`;
+    } else if (r.status === 'ok') {
+      cepRes.className = 'cep-result warn';
+      cepRes.innerHTML = `Para essa localização, é necessário consultar a possibilidade de entrega.<br>${askLink(r, 'Consultar disponibilidade')}${debugLine(r)}`;
+    } else if (r.status === 'noloc') {
+      cepRes.className = 'cep-result warn';
+      cepRes.innerHTML = `Para essa localização, é necessário consultar a possibilidade de entrega.<br>${askLink(r, 'Consultar disponibilidade')}${debugLine(r)}`;
+    } else if (r.status === 'notfound') {
+      cepRes.className = 'cep-result err';
+      cepRes.textContent = `Não encontramos o CEP ${fmtCep(d)}. Confira os números e tente de novo.`;
+    } else {
+      cepRes.className = 'cep-result warn';
+      cepRes.innerHTML = `Não conseguimos consultar o CEP agora. Fale com a gente para confirmar a entrega.<br>${askLink({ cep: d }, 'Consultar pelo WhatsApp')}${debugLine(r)}`;
+    }
+    if (r.status === 'ok' || r.status === 'noloc') prefillAddress(r);
   });
+  $('#go-cep').addEventListener('click', () => setTimeout(() => cep.focus({ preventScroll: true }), 400));
 
   /* Cards líquidos: o brilho segue o mouse */
   $$('.liquid').forEach(card => card.addEventListener('pointermove', e => {
