@@ -20,7 +20,6 @@ Protótipo em análise: textos, preços e bairros atendidos ainda são exemplos.
 ## Onde ajustar
 
 - Produtos e preços: lista `PRODUCTS` no script do `index.html` (preços em centavos)
-- Taxa de entrega: `FREE_FROM` e `FEE`
 - Horário de atendimento: `HOURS`
 - Número do WhatsApp: `WHATS`
 - Raio de entrega e posição da loja: `RADIUS_KM` e `STORE` (coordenadas da porta da loja, tiradas do Google Maps)
