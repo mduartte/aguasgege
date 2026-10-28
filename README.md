@@ -6,7 +6,28 @@ Protótipo em análise: textos, preços e bairros atendidos ainda são exemplos.
 
 ## Como abrir
 
-É uma página estática, sem instalação. Abra o `index.html` no navegador ou publique a pasta em qualquer hospedagem estática (GitHub Pages, Netlify).
+É uma página estática, sem instalação nem etapa de build. Publique a pasta em qualquer hospedagem estática (GitHub Pages, Netlify). Para testar no computador, sirva a pasta com um servidor local, por exemplo `python3 -m http.server`, e abra `http://localhost:8000`.
+
+## Estrutura
+
+```
+index.html            conteúdo da página (textos, seções e formulário)
+assets/
+  css/
+    base.css          cores, tipografia, botões e cabeçalho
+    sections.css      seções da página, na ordem em que aparecem
+    order.css         carrinho, finalização do pedido e aviso
+    effects.css       vidro líquido, efeitos do mouse e animações
+  js/
+    data.js           dados da loja: contato, horário, raio, produtos, planos e avaliações
+    utils.js          funções curtas usadas pelos outros scripts
+    page.js           avaliações, aberto/fechado, horário, números, menu e copiar
+    cart.js           catálogo, carrinho e mensagem do pedido no WhatsApp
+    cep.js            consulta de CEP e distância até a loja
+    club.js           calculadora do Clube
+    effects.js        efeitos do mouse e animações ao rolar
+  img/                logo (o arquivo em alta resolução não é carregado pelo site)
+```
 
 ## O que tem no site
 
@@ -19,8 +40,11 @@ Protótipo em análise: textos, preços e bairros atendidos ainda são exemplos.
 
 ## Onde ajustar
 
-- Produtos e preços: lista `PRODUCTS` no script do `index.html` (preços em centavos)
-- Horário de atendimento: `HOURS`
-- Número do WhatsApp: `WHATS`
-- Raio de entrega e posição da loja: `RADIUS_KM` e `STORE` (coordenadas da porta da loja, tiradas do Google Maps)
-- Para ver de onde veio cada coordenada na consulta de CEP, abra o site com `?debug` no endereço
+Quase tudo fica em `assets/js/data.js`:
+
+- `STORE`: WhatsApp, endereço, link do mapa, coordenadas da porta da loja, raio de entrega e horário
+- `PRODUCTS`: produtos e preços (em centavos); `QUICK`: itens do pedido rápido
+- `PLANS` e `AVULSO`: planos do Clube
+- `REVIEWS`: avaliações exibidas
+
+Para ver de onde veio cada coordenada na consulta de CEP, abra o site com `?debug` no endereço.
