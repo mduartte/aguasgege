@@ -492,6 +492,23 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
 .check input{width:18px;height:18px;accent-color:var(--brand)}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .drawer.step-2 .free,.drawer.step-2 .sum-row:not(.total){display:none}
+.mode-choices{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.mode-card{position:relative;display:grid;gap:2px;padding:14px 14px 14px 44px;border-radius:16px;background:var(--gray);cursor:pointer;transition:background .15s,box-shadow .15s}
+.mode-card input{position:absolute;opacity:0;pointer-events:none}
+.mode-card::before{content:"";position:absolute;left:14px;top:16px;width:18px;height:18px;border-radius:50%;border:2px solid #B8C1CF;background:var(--white)}
+.mode-card b{font-size:.98rem}
+.mode-card small{font-size:.8rem;color:var(--muted);line-height:1.35}
+.mode-card:has(input:checked){background:var(--brand-tint);box-shadow:inset 0 0 0 2px var(--brand)}
+.mode-card:has(input:checked)::before{border-color:var(--brand);background:var(--brand);box-shadow:inset 0 0 0 3px var(--white)}
+.mode-card:has(input:focus-visible){outline:3px solid var(--brand);outline-offset:2px}
+.pickup-card{display:grid;gap:4px;padding:16px;border-radius:16px;background:var(--green-tint);font-size:.92rem}
+.pickup-card b{font-size:1rem}
+.pickup-card span{color:var(--muted)}
+.pickup-card .link{margin-top:4px;font-size:.9rem}
+.cep-actions{display:flex;flex-wrap:wrap;gap:8px}
+.cep-pickup{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:8px 14px;border:0;border-radius:999px;background:var(--gray);color:var(--ink);font:700 .88rem/1.2 var(--font);cursor:pointer}
+.cep-pickup:hover{background:var(--line)}
+.cep-pickup .ico{width:16px;height:16px}
 .btn-whats{background:var(--whats);color:var(--white)}
 .btn-whats:hover{background:#0a7a3e}
 .cart-item{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px 12px;padding:14px 0;border-bottom:1px solid var(--line)}
@@ -713,7 +730,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
         <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span><b>Galões lacrados</b> e higienizados um a um</span></li>
         <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 6.5h11v9h-11zM13.5 9.5h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg><span><b>Entrega em até 2h</b> de segunda a sábado</span></li>
         <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 15h4"/></svg><span><b>Pix, cartão ou dinheiro</b> na entrega</span></li>
-        <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><b>Loja física</b> no Belenzinho</span></li>
+        <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><b>Retire na loja</b> no Belenzinho, sem taxa</span></li>
       </ul>
     </div>
   </div>
@@ -757,7 +774,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
         <ol class="how-steps">
           <li data-step="1"><h3>Escolha os produtos</h3><p>Use o pedido rápido ou o catálogo. Ajuste as quantidades com o − e o +.</p></li>
           <li data-step="2"><h3>Informe endereço e pagamento</h3><p>Apartamento, bloco, troco: tudo vai junto. O site lembra seus dados no próximo pedido.</p></li>
-          <li data-step="3"><h3>Envie e receba em até 2 horas</h3><p>O WhatsApp abre com a mensagem pronta. Na recarga, levamos o galão vazio.</p></li>
+          <li data-step="3"><h3>Envie e receba em até 2 horas</h3><p>O WhatsApp abre com a mensagem pronta. Na recarga, levamos o galão vazio. Prefere buscar? Escolha retirar na loja.</p></li>
         </ol>
       </div>
       <div class="phone" role="img" aria-label="Exemplo de conversa: o cliente envia o pedido montado no site e a Gegê Águas confirma a entrega">
@@ -937,7 +954,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
             <li>Belenzinho</li><li>Brás</li><li>Mooca</li><li>Tatuapé</li><li>Pari</li><li>Água Rasa</li><li class="more">parte fica além de 2 km: confira pelo CEP</li>
           </ul>
         </div>
-        <p class="fee-note"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span><strong>Entrega grátis</strong> em pedidos a partir de R$&nbsp;40,00. Abaixo desse valor, a taxa é de R$&nbsp;5,00.</span></p>
+        <p class="fee-note"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span><strong>Entrega grátis</strong> em pedidos a partir de R$&nbsp;40,00. Abaixo desse valor, a taxa é de R$&nbsp;5,00. <strong>Retirada na loja</strong> sem taxa.</span></p>
       </div>
     </div>
   </section>
@@ -972,6 +989,10 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
           <div class="answer"><img src="assets/logo-gege.webp" alt="" width="34" height="34"><p>Você escolhe o plano e o dia da entrega. A cobrança é mensal e você pode pausar ou cancelar pelo WhatsApp quando quiser.</p></div>
         </details>
         <details>
+          <summary>Posso retirar o pedido na loja?</summary>
+          <div class="answer"><img src="assets/logo-gege.webp" alt="" width="34" height="34"><p>Pode. Monte o pedido no site, escolha "Retirar na loja" e envie pelo WhatsApp. Separamos tudo e avisamos quando estiver pronto. A retirada é na R. Belém, 166, no Belenzinho, no horário de atendimento e sem taxa.</p></div>
+        </details>
+        <details>
           <summary>Vocês atendem empresas e condomínios?</summary>
           <div class="answer"><img src="assets/logo-gege.webp" alt="" width="34" height="34"><p>Sim. Oferecemos bebedouro em comodato, entregas programadas, nota fiscal e faturamento por boleto. Peça uma proposta pelo WhatsApp.</p></div>
         </details>
@@ -1000,7 +1021,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
     <div class="closing-grid">
       <div>
         <p class="footer-title">Loja física</p>
-        <address>R. Belém, 166 · Belenzinho<br>São Paulo - SP · 03057-010</address>
+        <address>R. Belém, 166 · Belenzinho<br>São Paulo - SP · 03057-010<br>Retirada de pedidos no horário de atendimento</address>
         <a class="link" href="https://www.google.com/maps/search/?api=1&amp;query=R.+Bel%C3%A9m%2C+166+-+Belenzinho%2C+S%C3%A3o+Paulo+-+SP%2C+03057-010" target="_blank" rel="noopener">Ver no mapa <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
       </div>
       <div>
@@ -1036,7 +1057,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
   </div>
   <ol class="co-steps" aria-label="Etapas do pedido">
     <li id="co-step-1" class="on"><span>1</span>Carrinho</li>
-    <li id="co-step-2"><span>2</span>Entrega e pagamento</li>
+    <li id="co-step-2"><span>2</span>Entrega ou retirada</li>
   </ol>
 
   <div class="drawer-body">
@@ -1046,11 +1067,30 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
 
     <form id="step-checkout" class="co-form" novalidate hidden>
       <fieldset>
-        <legend>Quem vai receber</legend>
-        <div class="f" data-field="name"><label for="co-name">Nome *</label><input id="co-name" name="name" autocomplete="name" placeholder="Seu nome"><small class="err-msg">Informe seu nome.</small></div>
+        <legend>Como você quer receber?</legend>
+        <div class="mode-choices" role="radiogroup" aria-label="Entrega ou retirada">
+          <label class="mode-card"><input type="radio" name="mode" value="entrega" checked><b>Entrega</b><small>Em até 2 horas, até 2 km da loja</small></label>
+          <label class="mode-card"><input type="radio" name="mode" value="retirada"><b>Retirar na loja</b><small>Sem taxa, no horário de atendimento</small></label>
+        </div>
       </fieldset>
 
       <fieldset>
+        <legend>Seu nome</legend>
+        <div class="f" data-field="name"><label for="co-name">Nome *</label><input id="co-name" name="name" autocomplete="name" placeholder="Seu nome"><small class="err-msg">Informe seu nome.</small></div>
+      </fieldset>
+
+      <fieldset id="pickup-fields" hidden>
+        <legend>Retirada na loja</legend>
+        <div class="pickup-card">
+          <b>R. Belém, 166 · Belenzinho</b>
+          <span>Seg. a sex. 9h às 18h · Sáb. 9h às 12h</span>
+          <span>Avisamos pelo WhatsApp quando o pedido estiver separado.</span>
+          <a class="link" href="https://www.google.com/maps/search/?api=1&amp;query=R.+Bel%C3%A9m%2C+166+-+Belenzinho%2C+S%C3%A3o+Paulo+-+SP%2C+03057-010" target="_blank" rel="noopener">Ver no mapa <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        </div>
+        <div class="f"><label for="co-pickup">Quando pretende retirar?</label><input id="co-pickup" name="pickup" placeholder="Ex.: hoje, por volta das 16h"></div>
+      </fieldset>
+
+      <fieldset id="delivery-fields">
         <legend>Endereço de entrega</legend>
         <div class="f" data-field="cep"><label for="co-cep">CEP</label><input id="co-cep" name="cep" inputmode="numeric" autocomplete="postal-code" placeholder="00000-000" maxlength="9"><small class="cep-note" id="co-cep-note" aria-live="polite"></small></div>
         <div class="f-row">
@@ -1076,7 +1116,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
       </fieldset>
 
       <fieldset>
-        <legend>Pagamento na entrega</legend>
+        <legend id="pay-legend">Pagamento na entrega</legend>
         <div class="f" data-field="pay">
           <div class="choices" role="radiogroup" aria-label="Forma de pagamento">
             <label class="choice"><input type="radio" name="pay" value="Pix"><span>Pix</span></label>
@@ -1102,7 +1142,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
   <div class="cart-summary">
     <div class="free"><div class="free-bar"><i id="free-bar"></i></div><p class="free-text" id="free-text"></p></div>
     <div class="sum-row"><span>Subtotal</span><span id="sum-sub">R$ 0,00</span></div>
-    <div class="sum-row"><span>Entrega</span><span id="sum-fee">–</span></div>
+    <div class="sum-row"><span id="sum-fee-label">Entrega</span><span id="sum-fee">–</span></div>
     <div class="sum-row total"><span>Total</span><span id="sum-total">R$ 0,00</span></div>
     <button class="btn btn-brand" id="checkout" type="button" disabled>Continuar para entrega</button>
     <a class="btn btn-whats" id="send-order" href="https://wa.me/5511993322468" target="_blank" rel="noopener" hidden><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5.5h15V16H10l-5.5 4.5z"/></svg>Enviar pedido pelo WhatsApp</a>
@@ -1334,13 +1374,13 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
         </div>`;
       }).join('');
     }
-    const sub = [...cart].reduce((s, [id, q]) => s + byId[id].price * q, 0);
-    const fee = sub === 0 || sub >= FREE_FROM ? 0 : FEE;
+    const { sub, fee } = totals();
     $('#sum-sub').textContent = `R$ ${fmt(sub)}`;
-    $('#sum-fee').textContent = sub === 0 ? '–' : fee ? `R$ ${fmt(fee)}` : 'Grátis';
+    $('#sum-fee-label').textContent = isPickup() ? 'Retirada na loja' : 'Entrega';
+    $('#sum-fee').textContent = sub === 0 ? '–' : fee ? `R$ ${fmt(fee)}` : isPickup() ? 'Sem taxa' : 'Grátis';
     $('#sum-total').textContent = `R$ ${fmt(sub + fee)}`;
     $('#free-bar').style.width = `${Math.min(100, (sub / FREE_FROM) * 100)}%`;
-    $('#free-text').textContent = sub >= FREE_FROM
+    $('#free-text').textContent = isPickup() ? 'Retirada na loja, sem taxa de entrega.' : sub >= FREE_FROM
       ? 'Você ganhou entrega grátis.'
       : `Faltam R$ ${fmt(FREE_FROM - sub)} para a entrega grátis.`;
     $('#checkout').disabled = count === 0;
@@ -1417,9 +1457,10 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
     const n = clean.includes(',') ? Number(clean.replace(/\./g, '').replace(',', '.')) : Number(clean);
     return Math.round(n * 100);
   };
+  const isPickup = () => radio('mode') === 'retirada';
   function totals() {
     const sub = [...cart].reduce((s, [id, q]) => s + byId[id].price * q, 0);
-    const fee = sub === 0 || sub >= FREE_FROM ? 0 : FEE;
+    const fee = sub === 0 || sub >= FREE_FROM || isPickup() ? 0 : FEE;
     return { sub, fee, total: sub + fee };
   }
 
@@ -1430,7 +1471,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
     $('#back-btn').hidden = n !== 2;
     $('#checkout').hidden = n !== 1;
     $('#send-order').hidden = n !== 2;
-    $('#drawer-title').textContent = n === 1 ? 'Seu pedido' : 'Entrega';
+    $('#drawer-title').textContent = n === 1 ? 'Seu pedido' : 'Finalizar pedido';
     $('#co-step-1').classList.toggle('on', n === 1);
     $('#co-step-2').classList.toggle('on', n === 2);
     drawer.classList.toggle('step-2', n === 2);
@@ -1446,6 +1487,11 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
     const isApt = radio('place') === 'Apartamento';
     const isCash = radio('pay') === 'Dinheiro';
     $('#apt-fields').hidden = !isApt;
+    const pickup = isPickup();
+    $('#delivery-fields').hidden = pickup;
+    $('#pickup-fields').hidden = !pickup;
+    $('#pay-legend').textContent = pickup ? 'Pagamento na retirada' : 'Pagamento na entrega';
+    $('#co-notes').placeholder = pickup ? 'Ex.: vou mandar outra pessoa buscar' : 'Ex.: entregar após as 14h, interfone quebrado';
     $('#cash-fields').hidden = !isCash;
     $('#change-field').hidden = !(isCash && $('#co-need-change').checked);
   }
@@ -1553,7 +1599,12 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
     const { sub, fee, total } = totals();
     const L = ['Olá, vim pelo site e gostaria de fazer um pedido!', '', '*Itens do pedido*'];
     cart.forEach((q, id) => L.push(`${q}x ${byId[id].name} – R$ ${fmt(byId[id].price * q)}`));
-    L.push('', `Subtotal: R$ ${fmt(sub)}`, `Entrega: ${fee ? 'R$ ' + fmt(fee) : 'Grátis'}`, `*Total: R$ ${fmt(total)}*`);
+    const pickup = isPickup();
+    L.push('', `Subtotal: R$ ${fmt(sub)}`, pickup ? 'Retirada na loja: sem taxa' : `Entrega: ${fee ? 'R$ ' + fmt(fee) : 'Grátis'}`, `*Total: R$ ${fmt(total)}*`);
+    if (pickup) {
+      L.push('', '*Retirada na loja*', `Nome: ${val('co-name')}`, 'Loja: R. Belém, 166 · Belenzinho');
+      if (val('co-pickup')) L.push(`Quando vou retirar: ${val('co-pickup')}`);
+    } else {
     L.push('', '*Entrega*', `Nome: ${val('co-name')}`, `Endereço: ${val('co-street')}, ${val('co-number')}`);
     const place = radio('place');
     if (place === 'Apartamento') L.push(`Apartamento: ${val('co-apt')}${val('co-block') ? ' · Bloco/Torre ' + val('co-block') : ''}`);
@@ -1564,10 +1615,11 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
     const chk = cepChecks.get(val('co-cep').replace(/\D/g, ''));
     if (chk && chk.status === 'ok') L.push(`Distância da loja: ~${fmtKm(chk.km)}${chk.km > RADIUS_KM ? ' (fora do raio de 2 km, consultar disponibilidade)' : ''}`);
     if (val('co-ref')) L.push(`Referência: ${val('co-ref')}`);
-    L.push('', '*Pagamento*', radio('pay') || '(não informado)');
+    }
+    L.push('', pickup ? '*Pagamento na retirada*' : '*Pagamento*', radio('pay') || '(não informado)');
     if (radio('pay') === 'Dinheiro') {
       const c = toCents(val('co-change'));
-      L.push($('#co-need-change').checked && c > 0 ? `Troco para R$ ${fmt(c)} (levar R$ ${fmt(c - total)} de troco)` : 'Não precisa de troco');
+      L.push($('#co-need-change').checked && c > 0 ? `Troco para R$ ${fmt(c)} (${pickup ? 'separar' : 'levar'} R$ ${fmt(c - total)} de troco)` : 'Não precisa de troco');
     }
     if (val('co-notes')) L.push('', `*Observações:* ${val('co-notes')}`);
     return L.join('\n');
@@ -1584,10 +1636,11 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
       if (!ok) bad.push(f);
     };
     need('name', !!val('co-name'));
-    need('street', !!val('co-street'));
-    need('number', !!val('co-number'));
-    need('district', !!val('co-district'));
-    need('apt', radio('place') !== 'Apartamento' || !!val('co-apt'));
+    const pickup = isPickup();
+    need('street', pickup || !!val('co-street'));
+    need('number', pickup || !!val('co-number'));
+    need('district', pickup || !!val('co-district'));
+    need('apt', pickup || radio('place') !== 'Apartamento' || !!val('co-apt'));
     need('pay', !!radio('pay'));
     const wantsChange = radio('pay') === 'Dinheiro' && $('#co-need-change').checked;
     need('change', !wantsChange || toCents(val('co-change')) > totals().total);
@@ -1595,7 +1648,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
   }
 
   form.addEventListener('input', () => { syncConditional(); updateSendLink(); form.querySelectorAll('.invalid').forEach(f => f.classList.remove('invalid')); });
-  form.addEventListener('change', () => { syncConditional(); updateSendLink(); });
+  form.addEventListener('change', e => { syncConditional(); updateSendLink(); if (e.target.name === 'mode') { renderCart(); form.querySelectorAll('.invalid').forEach(f => f.classList.remove('invalid')); } });
   form.addEventListener('submit', e => e.preventDefault());
 
   // Lembra os dados de entrega neste aparelho para o próximo pedido
@@ -1606,6 +1659,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
     if (data) {
       SAVED.forEach(id => { if (data[id]) $('#' + id).value = data[id]; });
       if (data.place) { const r = form.querySelector(`input[name="place"][value="${data.place}"]`); if (r) r.checked = true; }
+      if (data.mode) { const r = form.querySelector(`input[name="mode"][value="${data.mode}"]`); if (r) r.checked = true; }
     }
   } catch (e) { /* armazenamento indisponível: segue sem lembrar */ }
   syncConditional();
@@ -1622,7 +1676,7 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
     }
     updateSendLink();
     try {
-      const data = { place: radio('place') };
+      const data = { place: radio('place'), mode: radio('mode') };
       SAVED.forEach(id => { data[id] = val(id); });
       localStorage.setItem(SAVE_KEY, JSON.stringify(data));
     } catch (err) { /* sem armazenamento */ }
@@ -1682,6 +1736,15 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
     cep.value = d.length > 5 ? `${d.slice(0, 5)}-${d.slice(5)}` : d;
   });
   const placeOf = r => [r.street, r.district].filter(Boolean).join(', ') || `CEP ${fmtCep(r.cep)}`;
+  const PICKUP_BTN = '<button type="button" class="cep-pickup" data-pickup><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Retirar na loja</button>';
+  // "Retirar na loja": marca a retirada no pedido e abre o carrinho (ou leva ao catálogo, se estiver vazio)
+  function choosePickup() {
+    form.querySelector('input[name="mode"][value="retirada"]').checked = true;
+    syncConditional(); renderCart();
+    if (cart.size) { openDrawer(); showStep(2); }
+    else { $('#produtos').scrollIntoView({ block: 'start' }); toast('Escolha os produtos. A retirada na loja já está marcada no pedido.'); }
+  }
+  document.addEventListener('click', e => { if (e.target.closest('[data-pickup]')) choosePickup(); });
   const askLink = (r, label) => {
     const where = [r.street, r.district, r.city && `${r.city}${r.uf ? '/' + r.uf : ''}`].filter(Boolean).join(', ');
     const msg = `Olá, vim pelo site! Meu CEP é ${fmtCep(r.cep)}${where ? ` (${where})` : ''}. Vocês entregam no meu endereço?`;
@@ -1707,10 +1770,10 @@ html.show-sec .site-header .sec-tag{top:auto;bottom:-12px}
       cepRes.innerHTML = `Entregamos em <b>${esc(placeOf(r))}</b> em até 2 horas.${debugLine(r)}`;
     } else if (r.status === 'ok') {
       cepRes.className = 'cep-result warn';
-      cepRes.innerHTML = `Para essa localização, é necessário consultar a possibilidade de entrega.<br>${askLink(r, 'Consultar disponibilidade')}${debugLine(r)}`;
+      cepRes.innerHTML = `Para essa localização, é necessário consultar a possibilidade de entrega.<br><span class="cep-actions">${askLink(r, 'Consultar disponibilidade')}${PICKUP_BTN}</span>${debugLine(r)}`;
     } else if (r.status === 'noloc') {
       cepRes.className = 'cep-result warn';
-      cepRes.innerHTML = `Para essa localização, é necessário consultar a possibilidade de entrega.<br>${askLink(r, 'Consultar disponibilidade')}${debugLine(r)}`;
+      cepRes.innerHTML = `Para essa localização, é necessário consultar a possibilidade de entrega.<br><span class="cep-actions">${askLink(r, 'Consultar disponibilidade')}${PICKUP_BTN}</span>${debugLine(r)}`;
     } else if (r.status === 'notfound') {
       cepRes.className = 'cep-result err';
       cepRes.textContent = `Não encontramos o CEP ${fmtCep(d)}. Confira os números e tente de novo.`;

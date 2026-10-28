@@ -11,7 +11,7 @@ Protótipo em análise: textos, preços e bairros atendidos ainda são exemplos.
 ## O que tem no site
 
 - Pedido rápido no topo e catálogo com carrinho
-- Finalização do pedido que abre o WhatsApp da loja com a mensagem pronta (itens, endereço, pagamento e troco)
+- Finalização do pedido com entrega ou retirada na loja, que abre o WhatsApp da loja com a mensagem pronta (itens, endereço, pagamento e troco)
 - Consulta de CEP: até 2 km da loja confirma a entrega; mais longe, pede para consultar pelo WhatsApp
 - Status de aberto/fechado pelo horário de São Paulo
 - Calculadora do Clube de assinatura
